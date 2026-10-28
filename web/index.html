@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Go Fish</title>
+<link rel="icon" href="icon.png">
+<link rel="stylesheet" href="base.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="stage">
+  <header id="bar">
+    <div class="title">Go Fish<small>Dawn on Loon Lake</small></div>
+    <button id="bNew" title="Start a new game (F2)">New Game</button>
+    <button id="bRules" title="How to play">How to Play</button>
+    <span class="sep"></span>
+    <button id="bMusic" title="Music (M)">&#9835; Music</button>
+    <input id="vol" type="range" min="0" max="100" title="Volume">
+    <button id="bSfx" title="Sound effects">Sounds</button>
+    <button id="bCredits2" title="Credits and changelog">Credits</button>
+    <div class="stats"><span>Games <b id="sPlayed">0</b></span><span>Won <b id="sWon">0</b></span><span>Sets <b id="sSets">0</b></span></div>
+  </header>
+
+  <main id="table">
+    <canvas id="scene"></canvas>
+    <canvas id="water"></canvas>
+    <div id="pondLabel"><b id="pondCount">0</b><span>in the pond</span></div>
+    <div id="log" class="tackle"><div class="lid"><span>Fishing Log</span></div><div class="lines" id="logLines"></div></div>
+    <div id="seats"></div>
+    <div id="cards"></div>
+    <div id="prompt" class="tackle hidden">
+      <div class="msg" id="promptMsg"></div>
+      <div class="asks" id="asks"></div>
+    </div>
+    <div id="banner"></div>
+    <canvas id="fx"></canvas>
+    <div id="nowPlaying"></div>
+    <div id="ver"></div>
+  </main>
+
+  <div class="veil" id="title">
+    <div class="panel box title-box">
+      <div class="lidtop"><div class="latch"></div><div class="latch"></div></div>
+      <div class="kick">Loon Lake &middot; Sunrise</div>
+      <h1>Go Fish</h1>
+      <h2>A Lakeside Card Game</h2>
+      <div class="trays">
+        <div class="tray folks" id="folks"></div>
+        <div class="tray">
+          <div class="opt"><span>Pace</span><div class="chips" id="optPace"><button data-v="relaxed">Relaxed</button><button data-v="steady">Steady</button><button data-v="quick">Quick</button></div></div>
+          <div class="opt"><span>Opponents</span><div class="chips" id="optSkill"><button data-v="easy">Easygoing</button><button data-v="sharp">Sharp</button></div></div>
+        </div>
+      </div>
+      <button class="big" id="bStart">Cast Off</button>
+      <div class="links"><button id="bHow">How to Play</button> &middot; <button id="bCredits">Credits &amp; Changelog</button></div>
+      <div class="record" id="record"></div>
+      <div class="by"><span>An</span><img src="ironite-logo.png" alt="Ironite"><span>game</span></div>
+    </div>
+  </div>
+
+  <div class="veil hidden closable" id="rules">
+    <div class="panel box text-panel">
+      <h3>How to Play Go Fish</h3>
+      <p>You're on the dock with <b>Grandpa Walt</b>, <b>Captain Rosie</b> and <b>Little Finn</b>. Everyone gets 5 cards and the rest go in the <b>pond</b>.</p>
+      <ol>
+        <li><b>Ask.</b> On your turn, click a card in your hand to choose its rank, then click the person you want to ask. You can only ask for a rank you already hold.</li>
+        <li><b>Catch.</b> If they have any cards of that rank, they must hand them all over, and you go again.</li>
+        <li><b>Go fish.</b> If they don't, they say <i>"Go fish!"</i> and you draw a card from the pond. If you happen to draw the rank you asked for, you <b>fished your wish</b> and go again. Otherwise the turn passes to the left.</li>
+        <li><b>Sets.</b> When anyone collects all four cards of a rank, the set is laid down on the dock automatically and scores 1.</li>
+        <li><b>Running dry.</b> If your hand runs out, you draw one card from the pond to keep going.</li>
+        <li><b>The end.</b> When the pond runs out, the game is over. Whoever has laid down the most sets wins.</li>
+      </ol>
+      <p class="muted">Everyone at the table remembers who asked for what, so pay attention to the Fishing Log. Keys: F2 new game &middot; M music on/off &middot; F11 full screen</p>
+      <button class="big small" data-close>Back to the Dock</button>
+    </div>
+  </div>
+
+  <div class="veil hidden closable" id="credits">
+    <div class="panel box text-panel">
+      <h3>Credits</h3>
+      <div class="cred">
+        <div><span>Developed &amp; Published by</span><b>Ironite</b></div>
+        <div><span>Game Design</span><b>Ironite</b></div>
+        <div><span>Card Art &amp; Illustration</span><b>Ironite</b></div>
+        <div><span>Music</span><b>Ironite</b></div>
+        <div class="tunes">"Morning on Loon Lake", "Dockside Drift", "Cattail Lullaby"</div>
+        <div><span>Sound Effects</span><b>Ironite</b></div>
+        <div><span>Programming</span><b>Ironite</b></div>
+        <div><span>Typefaces</span><b>Lora &amp; Poppins (SIL Open Font License)</b></div>
+      </div>
+      <p class="muted">Copyright &copy; 2026 Ironite. All rights reserved.</p>
+      <h3>Changelog</h3>
+      <div id="changelog" class="changelog"></div>
+      <button class="big small" data-close>Close</button>
+    </div>
+  </div>
+
+  <div class="veil hidden" id="result">
+    <div class="panel box result-panel">
+      <div class="kick" id="rKick">The pond ran dry</div>
+      <h1 id="rTitle"></h1>
+      <div class="standings" id="rStand"></div>
+      <div class="record" id="rRecord"></div>
+      <div class="row"><button class="big" id="bAgain">Play Again</button><button class="big ghost" id="bToTitle">Back to the Dock</button></div>
+    </div>
+  </div>
+</div>
+<script src="core.js"></script>
+<script src="art.js"></script>
+<script src="music.js"></script>
+<script src="game.js"></script>
+</body>
+</html>

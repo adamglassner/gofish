@@ -1,0 +1,5 @@
+dist/
+build/
+installer/Output/
+Output/
+tools/mkres/go.sum
